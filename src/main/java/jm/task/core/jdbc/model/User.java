@@ -3,11 +3,11 @@ package jm.task.core.jdbc.model;
 
 import javax.persistence.*;
 
-//@Entity(name = "users")  - HIBERNATE
+@Entity(name = "users")
 @Table
 public class User {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)  - HIBERNATE
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String name;

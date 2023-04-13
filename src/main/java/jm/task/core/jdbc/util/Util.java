@@ -15,7 +15,7 @@ public class Util {
     private static final String url = "jdbc:postgresql://localhost:5432/postgres";
     private static final String user = "postgres";
     private static final String password = "12345";
-    //private static SessionFactory sessionFactory;   -HIBERNATE
+    private static SessionFactory sessionFactory;
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             Properties props = new Properties();
@@ -26,10 +26,8 @@ public class Util {
         return connection;
     }
 
-    /*  - HIBERNATE
-    public static SessionFactory getSessionFactory(){
+    public static SessionFactory getSessionFactory() throws SQLException{
         if (sessionFactory == null){
-            try{
                 Configuration config = new Configuration();
                 config.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
                 config.setProperty("hibernate.connection.url", url);
@@ -38,12 +36,7 @@ public class Util {
                 config.addAnnotatedClass(User.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(config.getProperties());
                 sessionFactory = config.buildSessionFactory(builder.build());
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
         }
         return sessionFactory;
     }
-     */
 }
