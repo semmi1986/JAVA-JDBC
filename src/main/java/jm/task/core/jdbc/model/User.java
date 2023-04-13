@@ -1,14 +1,14 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
+import javax.persistence.*;
+
+//@Entity(name = "users")  - HIBERNATE
 @Table
 public class User {
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)  - HIBERNATE
     private Long id;
-
     @Column
     private String name;
 
@@ -58,5 +58,10 @@ public class User {
 
     public void setAge(Byte age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "ID пользователя: " + getId() + " | Имя пользователя: " + getName() + " | Фамилия пользователя: " + getLastName() + " | Возраст пользователя: " + getAge();
     }
 }
