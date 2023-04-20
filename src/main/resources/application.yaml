@@ -1,0 +1,5 @@
+postgres:
+  driver: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/PP_1
+  username: postgres
+  password: 290787
