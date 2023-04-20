@@ -14,83 +14,65 @@ import java.util.logging.Logger;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static final Logger logger = Util.getConfigureLogger(UserDaoJDBCImpl.class.getName());
-    private final Connection connection;
-    private PreparedStatement statement;
 
     public UserDaoJDBCImpl() {
-        connection = Util.connect();
     }
 
     public void createUsersTable() {
-        try {
-            statement = connection.prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS users (" +
-                    "id BIGSERIAL PRIMARY KEY, " +
-                    "name VARCHAR(50) NOT NULL, " +
-                    "lastName VARCHAR(50) NOT NULL, " +
-                    "age SMALLINT NOT NULL);"
-            );
+        try (Connection connection = Util.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                     "CREATE TABLE IF NOT EXISTS users (" +
+                             "id BIGSERIAL PRIMARY KEY, " +
+                             "name VARCHAR(50) NOT NULL, " +
+                             "lastName VARCHAR(50) NOT NULL, " +
+                             "age SMALLINT NOT NULL);")) {
             statement.executeUpdate();
+
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
-        } finally {
-            statementClose();
         }
     }
 
     public void dropUsersTable() {
-        try {
-            statement = connection.prepareStatement(
-                    "DROP TABLE IF EXISTS users;"
-            );
+        try (Connection connection = Util.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                "DROP TABLE IF EXISTS users;")) {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
-        } finally {
-            statementClose();
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try {
-            statement = connection.prepareStatement(
-                    "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)"
-            );
+        try (Connection connection = Util.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, lastName);
             statement.setByte(3, age);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
-        } finally {
-            statementClose();
         }
     }
 
     public void removeUserById(long id) {
-        try {
-            statement = connection.prepareStatement(
-                    "DELETE FROM users WHERE id = ?;"
-            );
+        try (Connection connection = Util.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                "DELETE FROM users WHERE id = ?;")) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
-        } finally {
-            statementClose();
         }
     }
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try {
-            statement = connection.prepareStatement(
-                    "SELECT * FROM users;"
-            );
+        try (Connection connection = Util.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                "SELECT * FROM users;")) {
+
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 users.add(new User(
@@ -101,34 +83,17 @@ public class UserDaoJDBCImpl implements UserDao {
             }
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
-        } finally {
-            statementClose();
         }
         return users;
     }
 
     public void cleanUsersTable() {
-        try {
-            statement = connection.prepareStatement(
-                    "DELETE FROM users;"
-            );
+        try (Connection connection = Util.connect();
+             PreparedStatement statement = connection.prepareStatement(
+                "DELETE FROM users;")) {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
-        } finally {
-            statementClose();
-        }
-    }
-
-    private void statementClose() {
-        try {
-            statement.close();
-            if (statement != null) statement = null;
-        } catch (SQLException e) {
-            logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
         }
     }
 }

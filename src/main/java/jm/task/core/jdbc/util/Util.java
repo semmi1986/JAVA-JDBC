@@ -17,6 +17,11 @@ public class Util {
     static {
          logger = getConfigureLogger(Util.class.getName());
         configureProperties();
+        try {
+            Class.forName(properties.getProperty("driver"));
+        } catch (ClassNotFoundException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 
     private Util() {
@@ -45,33 +50,14 @@ public class Util {
     }
 
     public static Connection connect() {
-        if (connection == null) {
-            initConnection();
-        }
-        return connection;
-    }
-
-    private static void initConnection() {
         try {
-            Class.forName(properties.getProperty("driver"));
             connection = DriverManager.getConnection(
                     properties.getProperty("url"),
                     properties.getProperty("username"),
                     properties.getProperty("password"));
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
-            throw new RuntimeException(e);
         }
-    }
-
-    public static void disconnect() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                logger.log(Level.WARNING, e.getMessage(), e);
-                throw new RuntimeException(e);
-            }
-        }
+        return connection;
     }
 }
