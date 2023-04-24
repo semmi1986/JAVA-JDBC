@@ -1,42 +1,95 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
+import org.hibernate.Session;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserDaoHibernateImpl implements UserDao {
+    private static final Logger logger = Util.getConfigureLogger(UserDaoHibernateImpl.class.getName());
     public UserDaoHibernateImpl() {
-
     }
 
 
     @Override
     public void createUsersTable() {
-
+        try (Session session = Util.getSession()) {
+            session.beginTransaction();
+            session.createNativeQuery(
+                    "CREATE TABLE IF NOT EXISTS users (" +
+                            "id BIGSERIAL PRIMARY KEY, " +
+                            "name VARCHAR(50) NOT NULL, " +
+                            "lastName VARCHAR(50) NOT NULL, " +
+                            "age SMALLINT NOT NULL);"
+            );
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 
     @Override
     public void dropUsersTable() {
-
+        try (Session session = Util.getSession()) {
+            session.beginTransaction();
+            session.createNativeQuery(
+                    "DROP TABLE IF EXISTS users;"
+            ).executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-
+        try (Session session = Util.getSession()) {
+            session.beginTransaction();
+            session.save(new User(name, lastName, age));
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 
     @Override
     public void removeUserById(long id) {
-
+        try (Session session = Util.getSession()) {
+            session.beginTransaction();
+            session.remove(session.get(User.class, id));
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        List<User> list = null;
+        try (Session session = Util.getSession()) {
+            session.beginTransaction();
+            list = session.createQuery("SELECT u FROM User u", User.class).getResultList();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
+        return list;
     }
 
     @Override
     public void cleanUsersTable() {
-
+        try (Session session = Util.getSession()) {
+            session.beginTransaction();
+            session.createQuery(
+                    "DELETE FROM User"
+            ).executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
     }
 }

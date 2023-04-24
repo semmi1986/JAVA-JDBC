@@ -1,21 +1,38 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Util {
     // реализуйте настройку соеденения с БД
     private static Logger logger;
-    private static final Properties properties = new Properties();;
+    private static final Properties properties = new Properties();
+    ;
     private static Connection connection;
+    private static final SessionFactory sessionFactory;
 
     static {
-         logger = getConfigureLogger(Util.class.getName());
+        sessionFactory = new Configuration()
+                .addAnnotatedClass(User.class)
+                .buildSessionFactory();
+    }
+
+    static {
+        logger = getConfigureLogger(Util.class.getName());
         configureProperties();
         try {
             Class.forName(properties.getProperty("driver"));
@@ -59,5 +76,13 @@ public class Util {
             logger.log(Level.WARNING, e.getMessage(), e);
         }
         return connection;
+    }
+
+    public static Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    public static void closSessionFactory() {
+        if (sessionFactory != null) sessionFactory.close();
     }
 }
