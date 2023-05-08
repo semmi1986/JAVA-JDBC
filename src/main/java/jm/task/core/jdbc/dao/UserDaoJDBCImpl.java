@@ -14,12 +14,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         String sql = """
-                CREATE IF NOT EXISTS users (
-                id        SERIAL,
+                CREATE TABLE IF NOT EXISTS users (
+                id        SERIAL PRIMARY KEY,
                 name      VARCHAR(100) NOT NULL,
                 lastName  VARCHAR(100) NOT NULL,
                 age SMALLINT
-                ); """;
+                )""";
         try (Connection connection = DriverManager.getConnection(Util.url, Util.username, Util.password); Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
