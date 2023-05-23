@@ -8,13 +8,20 @@ import java.util.Properties;
 
 public class Util {
     // реализуйте настройку соеденения с БД
-    public static Connection getConnection() throws SQLException {
-        String url = "jdbc:postgresql://localhost/dbtest";
-        Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "2067");
-        props.setProperty("ssl", "false");
-        return DriverManager.getConnection(url, props);
+    public static Connection getConnection()  {
+        try {
+            String url = "jdbc:postgresql://localhost/dbtest";
+            Properties props = new Properties();
+            props.setProperty("user", "postgres");
+            props.setProperty("password", "2067");
+            props.setProperty("ssl", "false");
+            return DriverManager.getConnection(url, props);
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
+
 
     }
 

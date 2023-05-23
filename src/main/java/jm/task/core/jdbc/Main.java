@@ -2,6 +2,7 @@ package jm.task.core.jdbc;
 
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
-        UserServiceImpl table = new UserServiceImpl(new UserDaoJDBCImpl());
+
+        UserService table = new UserServiceImpl(new UserDaoJDBCImpl());
         table.createUsersTable();
 
         table.saveUser("Roman", "Gonchar", (byte) 23);

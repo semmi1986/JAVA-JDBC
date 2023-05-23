@@ -8,19 +8,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class UserDaoJDBCImpl implements UserDao {
-    Connection connection;
+    private static final Connection connection = Util.getConnection();
 
-    public UserDaoJDBCImpl() {
-        try {
-            connection = Util.getConnection();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     public void createUsersTable() {
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
+
             statement.execute("""
                     CREATE TABLE IF NOT EXISTS users (
                         id bigserial NOT NULL PRIMARY KEY,
@@ -47,8 +40,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (name, lastname, age) VALUES (?, ?, ?)");
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users (name, lastname, age) VALUES (?, ?, ?)")) {
+
             statement.setString(1, name);
             statement.setString(2, lastName);
             statement.setByte(3, age);
@@ -61,8 +54,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id = ?");
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id = ?")) {
+
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
