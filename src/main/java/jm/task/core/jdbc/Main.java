@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
 
-        UserService table = new UserServiceImpl(new UserDaoJDBCImpl());
+        UserService table = new UserServiceImpl();
         table.createUsersTable();
 
         table.saveUser("Roman", "Gonchar", (byte) 23);
