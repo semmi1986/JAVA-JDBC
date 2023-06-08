@@ -14,7 +14,7 @@ public class Util {
                 connection = DriverManager.getConnection(
                         "jdbc:postgresql://localhost:5432/postgres",
                         "postgres",
-                        "admin"
+                        "postgres"
                 );
             }
         } catch (SQLException e) {
