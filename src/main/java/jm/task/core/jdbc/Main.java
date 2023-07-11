@@ -30,7 +30,8 @@ public class Main {
         userService.dropUsersTable();
 
         try {
-            Util.CONNECTION.close();
+            Util.getConnection().close();
+            Util.getSessionFactory().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
