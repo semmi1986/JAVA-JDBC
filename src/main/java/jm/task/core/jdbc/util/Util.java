@@ -10,9 +10,9 @@ public class Util {
     private static final String dbURL = "jdbc:postgresql://localhost:5432/local_db";
     private static final String dbUser = "postgres";
     private static final String dbPass = "1234";
-    private static Connection connection;
 
-    public static Connection openConnection() {
+    public static Connection openConnection() throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL);
         try {
             Class.forName(dbDriver);
         } catch (ClassNotFoundException e) {
@@ -20,17 +20,16 @@ public class Util {
         }
         try {
             connection = DriverManager.getConnection(dbURL, dbUser, dbPass);
-            //System.out.println("Get connection");
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return connection;
     }
 
-    public static void closeConnection() {
+    public static void closeConnection() throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL);
         try {
             connection.close();
-            // System.out.println("Connection closed");
         } catch (SQLException e) {
             throw new RuntimeException();
         }
