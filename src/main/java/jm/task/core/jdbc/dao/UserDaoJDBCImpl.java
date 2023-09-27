@@ -1,16 +1,13 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jm.task.core.jdbc.util.Util.closeConnection;
-import static jm.task.core.jdbc.util.Util.openConnection;
+import static jm.task.core.jdbc.util.Util.*;
 
 public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
@@ -24,6 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             System.out.println("Таблица уже существует");
         }
+
     }
 
     public void dropUsersTable() {
@@ -33,7 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate(sqlQuery);
             System.out.println("Таблица удалена");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -46,7 +44,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.executeUpdate();
             System.out.printf("User с именем %s добавлен в базу\n", name);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -56,7 +54,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -74,7 +72,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 listUser.add(user);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return listUser;
     }
@@ -85,7 +83,7 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate();
             System.out.println("База данных очищена");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }

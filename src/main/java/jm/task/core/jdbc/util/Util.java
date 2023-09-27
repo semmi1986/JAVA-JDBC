@@ -11,8 +11,8 @@ public class Util {
     private static final String dbUser = "postgres";
     private static final String dbPass = "1234";
 
-    public static Connection openConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(dbURL);
+
+    /** public static Connection openConnection() {
         try {
             Class.forName(dbDriver);
         } catch (ClassNotFoundException e) {
@@ -24,14 +24,17 @@ public class Util {
             e.printStackTrace();
         }
         return connection;
+    } **/
+
+    public static Connection openConnection() throws SQLException {
+        try {
+            Class.forName(dbDriver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return DriverManager.getConnection(dbURL, dbUser, dbPass);
+
     }
 
-    public static void closeConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(dbURL);
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
-    }
 }
