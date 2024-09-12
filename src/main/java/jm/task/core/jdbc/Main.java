@@ -8,5 +8,6 @@ public class Main {
         UserService usrService = new UserServiceImpl();
 
         usrService.createUsersTable();
+        usrService.dropUsersTable();
     }
 }

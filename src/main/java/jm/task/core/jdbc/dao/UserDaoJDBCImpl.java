@@ -9,6 +9,7 @@ import java.util.List;
 public class UserDaoJDBCImpl implements UserDao {
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS users " +
             "(id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, name VARCHAR, lastName VARCHAR, age SMALLINT CHECK (age>=0))";
+    private static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS users";
 
     public UserDaoJDBCImpl() {
 
@@ -18,13 +19,20 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Connection connection = Util.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(CREATE_TABLE_SQL);
+            System.out.println("Table created");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void dropUsersTable() {
-
+        try (Connection connection = Util.getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute(DROP_TABLE_SQL);
+            System.out.println("Table dropped");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveUser(String name, String lastName, byte age) {
