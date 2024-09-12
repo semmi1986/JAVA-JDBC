@@ -8,7 +8,7 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS users " +
-            "(id BIGINT AUTO_INCREMENT PRIMARY KEY, name VARCHAR, lastName VARCHAR, age TINYINT)";
+            "(id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, name VARCHAR, lastName VARCHAR, age SMALLINT CHECK (age>=0))";
 
     public UserDaoJDBCImpl() {
 
