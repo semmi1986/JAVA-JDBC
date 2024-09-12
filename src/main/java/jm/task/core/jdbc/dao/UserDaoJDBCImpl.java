@@ -11,6 +11,7 @@ public class UserDaoJDBCImpl implements UserDao {
             "(id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, name VARCHAR, lastName VARCHAR, age SMALLINT CHECK (age>=0))";
     private static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS users";
     private static final String INSERT_USER_SQL = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
+    private static final String DELETE_USER_SQL = "DELETE FROM users WHERE id = ?";
 
     public UserDaoJDBCImpl() {
 
@@ -51,7 +52,14 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-
+        try(Connection connection = Util.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_SQL)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+            System.out.println("remove user with id " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<User> getAllUsers() {

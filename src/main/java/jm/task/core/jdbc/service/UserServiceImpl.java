@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void removeUserById(long id) {
-
+        userDao.removeUserById(id);
     }
 
     public List<User> getAllUsers() {
