@@ -4,6 +4,7 @@ import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
@@ -13,6 +14,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private static final String INSERT_USER_SQL = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
     private static final String DELETE_USER_SQL = "DELETE FROM users WHERE id = ?";
     private static final String CLEAN_USER_SQL = "TRUNCATE TABLE users";
+    private static final String SELECT_USER_SQL = "SELECT * FROM users";
 
     public UserDaoJDBCImpl() {
 
@@ -64,7 +66,24 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
-        return null;
+        List<User> users = new ArrayList<>();
+        try (Connection connection = Util.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(SELECT_USER_SQL)){
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getLong("id"));
+                user.setName(resultSet.getString("name"));
+                user.setLastName(resultSet.getString("lastName"));
+                user.setAge(resultSet.getByte("age"));
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public void cleanUsersTable() {

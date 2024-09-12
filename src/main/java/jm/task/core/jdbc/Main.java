@@ -12,7 +12,9 @@ public class Main {
         usrService.saveUser("John", "Smith", (byte) 20);
         usrService.saveUser("Bob", "Marli", (byte) 19);
         usrService.saveUser("Juli", "Robinson", (byte) 29);
+        usrService.getAllUsers().forEach(System.out::println);
         usrService.removeUserById(2);
+        usrService.getAllUsers().forEach(System.out::println);
         usrService.cleanUsersTable();
         usrService.dropUsersTable();
     }
