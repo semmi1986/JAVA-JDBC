@@ -13,6 +13,7 @@ public class Main {
         usrService.saveUser("Bob", "Marli", (byte) 19);
         usrService.saveUser("Juli", "Robinson", (byte) 29);
         usrService.removeUserById(2);
+        usrService.cleanUsersTable();
         usrService.dropUsersTable();
     }
 }

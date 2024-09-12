@@ -12,6 +12,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS users";
     private static final String INSERT_USER_SQL = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
     private static final String DELETE_USER_SQL = "DELETE FROM users WHERE id = ?";
+    private static final String CLEAN_USER_SQL = "TRUNCATE TABLE users";
 
     public UserDaoJDBCImpl() {
 
@@ -67,6 +68,12 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-
+        try(Connection connection = Util.getConnection();
+        Statement statement = connection.createStatement()) {
+            statement.execute(CLEAN_USER_SQL);
+            System.out.println("Table cleared");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
