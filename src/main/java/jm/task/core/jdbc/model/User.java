@@ -1,18 +1,15 @@
 package jm.task.core.jdbc.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
 @Entity
 @Table(name = "Users")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +23,6 @@ public class User {
 
     @Column(name = "age")
     private Byte age;
+
 
 }
