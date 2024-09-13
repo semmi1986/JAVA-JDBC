@@ -1,16 +1,16 @@
 package jm.task.core.jdbc.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
-
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +23,4 @@ public class User {
 
     @Column(name = "age")
     private Byte age;
-
-
 }
