@@ -1,31 +1,28 @@
 package jm.task.core.jdbc.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Getter
-@Setter
+@Entity
+@Table(name = "users")
 @ToString
+@Setter
+@Getter
+@Builder
 @NoArgsConstructor
-
-@Table
+@AllArgsConstructor
 public class User {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "lastName")
     private String lastName;
 
-    @Column
+    @Column(name = "age")
     private Byte age;
-
 }

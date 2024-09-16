@@ -2,11 +2,11 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import lombok.Data;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 public class UserDaoJDBCImpl implements UserDao {
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS users " +
             "(id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, name VARCHAR, lastName VARCHAR, age SMALLINT CHECK (age>=0))";
